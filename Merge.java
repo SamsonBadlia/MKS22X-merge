@@ -74,12 +74,24 @@ public class Merge{
     public static int[] merge(int[] data1, int[] data2){
       int[] output = new int[data1.length + data2.length];
       int i = 0, j = 0;
-      //goes through both arrays and compares the values
+      //goes through both arrays and compares the values of the array and adjusts as needed
       for (int k = 0; k < output.length; k++) {
-          if (i >= data1.length) output[k] = data2[j++];
-          else if (j >= data2.length) output[k] = data1[i++];
-          else if (data1[i] <= data2[j])  output[k] = data1[i++];
-          else output[k] = data2[j++];
+          if (i >= data1.length) {
+            output[k] = data2[j];
+            j++;
+          }
+          else if (j >= data2.length){
+            output[k] = data1[i];
+            i++;
+          }
+          else if (data1[i] <= data2[j]){
+            output[k] = data1[i];
+            i++;
+          }
+          else {
+            output[k] = data2[j];
+            j++;
+          }
       }
       return output;
     }
