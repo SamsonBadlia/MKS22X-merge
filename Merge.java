@@ -96,12 +96,27 @@ public class Merge{
       return output;
     }
 
+    public static void insertionSort(int[] ary, int lo, int hi){
+      int current;
+      int c;
+      for (int i = lo; i < hi; i++){
+          current = ary[i];
+          c = i;
+          while(c > lo && ary[c-1] > current) {
+            ary[c] = ary[c-1];
+            c--;
+          }
+          ary[c] = current;
+          }
+      }
+
     public static void mergesort(int[]data){
       if (data.length > 0) mergesort(data,0,data.length - 1);
     }
 
     public static void mergesort(int[] data, int lo, int hi){
         if (lo >= hi) return;
+        if (hi <= 100) insertionSort(data,lo,hi);
         //finds lengths of both arrays and creates them
         int len = data.length;
         int len1 = len / 2;
@@ -114,6 +129,10 @@ public class Merge{
         }
         for (int i = 0; i < right.length; i++) {
              right[i] = data[i + len1];
+         }
+        if (len1 - lo <= 1){
+           insertionSort(data, lo, len1 - 1);
+           insertionSort(data, len1 + 1, hi);
          }
          //sort both sides
         mergesort(left,0,left.length - 1);
