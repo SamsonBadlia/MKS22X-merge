@@ -111,7 +111,8 @@ public class Merge{
       }
 
     public static void mergesort(int[]data){
-      if (data.length > 0) mergesort(data,0,data.length - 1);
+      int[] temp = new int[data.length];
+      if (data.length > 0) mergesort(data,temp,0,data.length - 1);
     }
 
     public static void mergesort(int[] data, int lo, int hi){
@@ -119,20 +120,20 @@ public class Merge{
         if (hi <= 100) insertionSort(data,lo,hi);
         //finds lengths of both arrays and creates them
         int len = data.length;
-        int len1 = len / 2;
-        int len2 = len - len1;
-        int[] left = new int[len1];
+        int mid = len / 2;
+        int len2 = len - mid;
+        int[] left = new int[mid];
         int[] right = new int[len2];
         //fills both arrays
         for (int i = 0; i < left.length; i++) {
             left[i] = data[i];
         }
         for (int i = 0; i < right.length; i++) {
-             right[i] = data[i + len1];
+             right[i] = data[i + mid];
          }
-        if (len1 - lo <= 1){
-           insertionSort(data, lo, len1 - 1);
-           insertionSort(data, len1 + 1, hi);
+        if (mid - lo <= 1){
+           insertionSort(data, lo, mid - 1);
+           insertionSort(data, mid + 1, hi);
          }
          //sort both sides
         mergesort(left,0,left.length - 1);
@@ -146,4 +147,28 @@ public class Merge{
         }
       }
 
-}
+    public static void mergesort(int[] data, int[] temp, int lo, int hi){
+      if (lo >= hi) return;
+      for (int i = 0; i < data.length; i++ ){
+        temp[i] = data[i];
+      }
+      int mid = (lo + hi) / 2;
+      mergesort(temp, data, lo, mid);
+      mergesort(temp, data, mid + 1, hi);
+      merge(temp,data,lo,mid,hi);
+    }
+
+    public static void merge(int[] temp, int[] current, int lo, int mid, int hi){
+      int i = lo; int j = mid + 1; int k = lo;
+      while (i <= mid && j <= hi){
+        if (temp[i] < temp[j]){
+          current[k] = temp[i];
+          i++;
+        }else{
+          current[k] = temp[j];
+          j++;
+        }
+        k++;
+      }
+    }
+  }
