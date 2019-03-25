@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Arrays;
 
 public class Merge{
 
@@ -73,7 +74,6 @@ public class Merge{
       public static int[] merge(int[] data1, int[] data2){
         int[] output = new int[data1.length + data2.length];
         int i = 0, j = 0;
-        //goes through both arrays and compares the values of the array and adjusts as needed
         for (int k = 0; k < output.length; k++) {
             if (i >= data1.length) {
               output[k] = data2[j];
@@ -95,27 +95,66 @@ public class Merge{
         return output;
       }
 
-      public static void insertionSort(int[] ary, int lo, int hi){
-        int current;
-        int c;
-        for (int i = lo; i < hi; i++){
-            current = ary[i];
-            c = i;
-            while(c > lo && ary[c-1] > current) {
-              ary[c] = ary[c-1];
-              c--;
-            }
-            ary[c] = current;
-            }
-        }
-
-      public static void mergesort(int[]data){
-        if (data.length > 0) mergesort(data,0,data.length - 1);
+      public static void insertionSort(int[] data, int lo, int hi){
+          for (int i = lo; i <= hi; i++) {
+              int temp = data[i];
+              int c = i;
+              while (c > lo && data[c - 1] > temp) {
+                  data[c] = data[c - 1];
+                  c--;
+              }
+              data[c] = temp;
+          }
       }
 
+      public static void mergesort(int[]data){
+        int[] temp = new int[data.length];
+        for (int i = 0; i < data.length; i++){
+          temp[i] = data[i];
+        }
+        mergesortH(data,temp,0,data.length - 1);
+      }
+
+      private static void mergesortH(int[] data, int[] temp, int start, int end){
+        if (start >= end) return;
+        int mid = (start + end) / 2;
+        if(mid - start <= 43){
+            insertionSort(temp, start, mid);
+            insertionSort(temp, mid + 1, end);
+        }else{
+            mergesortH(temp, data, start, mid);
+            mergesortH(temp, data, mid + 1, end);
+        }
+        merge(temp, data, start, mid, end);
+    }
+
+    public static void merge(int[] data, int[] temp, int start, int middle, int end){
+      int s = start;
+      int midd = middle + 1;
+      for(int i = start; i <= end; i++){
+          if(s > middle){
+              temp[i] = data[midd];
+              midd++;
+          }else if(midd > end){
+              temp[i] = data[s];
+              s++;
+          }else{
+              int sVal = data[s];
+              int middVal = data[midd];
+              if(sVal > middVal){
+                  temp[i] = middVal;
+                  midd++;
+              }else{
+                  temp[i] = sVal;
+                  s++;
+              }
+          }
+      }
+    }
+
+/*
       public static void mergesort(int[] data, int lo, int hi){
           if (lo >= hi) return;
-          if (hi <= 100) insertionSort(data,lo,hi);
           //finds lengths of both arrays and creates them
           int len = data.length;
           int len1 = len / 2;
@@ -129,10 +168,6 @@ public class Merge{
           for (int i = 0; i < right.length; i++) {
                right[i] = data[i + len1];
            }
-          if (len1 - lo <= 1){
-             insertionSort(data, lo, len1 - 1);
-             insertionSort(data, len1 + 1, hi);
-           }
            //sort both sides
           mergesort(left,0,left.length - 1);
           mergesort(right,0,right.length -1);
@@ -144,5 +179,5 @@ public class Merge{
             data[i] = temp[i];
           }
         }
-
+*/
   }
